@@ -13,12 +13,12 @@ public class TiledBackground : MonoBehaviour
 
 	private readonly List<float> rotations = new List<float>{0, 90, 180, 270};
 
-    void Start()
+    public void Start()
     {
         TileBackground(GetComponent<BoxCollider2D>());
     }
 
-    void TileBackground(BoxCollider2D background)
+    public void TileBackground(BoxCollider2D background)
     {
 		var random = new System.Random();
 
