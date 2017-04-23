@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CatAI : MonoBehaviour 
+public class CatAI : MonoBehaviour
 {
 	public const float PATROL_SPEED = 10;
 	public enum Behaviour {
@@ -26,12 +26,7 @@ public class CatAI : MonoBehaviour
 	}
 
 	public void FixedUpdate() {
-		var facingDirection = GetComponent<Rigidbody2D>().velocity;
-
-		transform.rotation = Quaternion.AngleAxis(
-			Mathf.Atan2(facingDirection.y, facingDirection.x) * Mathf.Rad2Deg - 90,
-			Vector3.forward
-		);
+		transform.rotation = Sprites.rotateFacing(GetComponent<Rigidbody2D>().velocity, -90f);
 
 		switch (currentBehaviour) {
 			case Behaviour.Attacking:
@@ -50,6 +45,17 @@ public class CatAI : MonoBehaviour
 				{
 					currentBehaviour = Behaviour.Hunting;
 					return;
+				}
+
+				var velocity = GetComponent<Rigidbody2D>().velocity;
+
+				if (velocity.magnitude < PATROL_SPEED)
+				{
+					velocity = velocity.normalized * PATROL_SPEED;
+				}
+				else if (velocity.magnitude > PATROL_SPEED * 1.5)
+				{
+					velocity = velocity.normalized * PATROL_SPEED;
 				}
 
 				break;

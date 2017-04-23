@@ -18,9 +18,10 @@ At each top level, I want to do at least the first thing for each one (some game
     * More complicated levels, obstacles (add as needed?)
     * Procedural generation?
   * AI
-    * Make some simple AI
+    * Make some simple AI - Done ish
     * Add damage/health (damage is to key? Maybe you get a bunch of 'lives' at that level, until the key is gone?)
     * Generate some more complex AI behaviours
+      * Pathfinding?
   * Level transitions
     * "Zoom out" effect - kind of important for the theme? Maybe context is enough - you become the enemy you faced in the previous level.
   * Level theming
@@ -51,7 +52,13 @@ At each top level, I want to do at least the first thing for each one (some game
   * Make _different_ level music for each level
 
 Misc ideas:
+---
 * +/-1 effect
   * There's going to be a level above and a level below you, after the first level. 
   * Will you affect the level below? 
     * Does killing the things below you hurt your chances on the current level? * If you lose at a level, do you go back to the previous one?
+
+Future ideas/Out of Scope
+---
+* Refactorings!
+  * At the moment the AI has several different behaviours, that trigger different things based on the context, so a given 'behaviour' is spread out among many contexts. Would be good to group all the behaviour's behaviours together in one class, and register callbacks or something?
