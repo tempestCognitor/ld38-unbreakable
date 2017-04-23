@@ -7,8 +7,7 @@ public class CatAI : MonoBehaviour
 {
 	public const float PATROL_SPEED = 10;
 	public const float HUNT_SPEED = 15;
-	public const float RETURN_SPEED = 5;
-	public const float ATTACK_POWER = 20;
+	public const float RETURN_SPEED = 10;
 	public enum Behaviour {
 		Patrolling,
 		Hunting,
@@ -154,8 +153,6 @@ public class CatAI : MonoBehaviour
 				if (col.gameObject.name == "MousePlayer")
 				{
 					// Kill the player
-                    var pushBack = transform.position - col.transform.position;
-                    col.gameObject.GetComponent<Rigidbody2D>().velocity = pushBack.normalized * ATTACK_POWER;
 				}
 				break;
             default:
@@ -183,7 +180,7 @@ public class CatAI : MonoBehaviour
     }
 
 	private Vector2 SetPatrol() {
-		var move = (startDirection.x != 0 && startDirection.y != 0
+		var move = (startDirection.x != 0 || startDirection.y != 0
 			? startDirection
 			: Vector2.right)
 			* PATROL_SPEED;
