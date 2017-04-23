@@ -44,24 +44,6 @@ public class TiledBackground : MonoBehaviour
 
                 newTile.transform.parent = transform;
 				newTile.transform.Rotate(Vector3.forward * rotations[random.Next(rotations.Count)]);
-
-                if (i == 0 || j == 0 || i == tilesX || j == tilesY) {
-                    var outerWallInstance = Instantiate(wall, newTilePos, Quaternion.identity) as GameObject;
-                    //outerWallInstance.transform.SetParent(transform);
-                    outerWallInstance.layer = LayerMask.NameToLayer("Default");
-
-                    if((i == 0 || i == tilesX) && j % 2 == 0)
-                    {
-                        outerWallInstance.GetComponent<SpriteRenderer>().color = Color.green;
-                    }
-                    else if((j == 0 || j == tilesY) && i % 2 == 0)
-                    {
-                        outerWallInstance.GetComponent<SpriteRenderer>().color = Color.blue;
-                    }
-
-                    Debug.Log(outerWallInstance.layer);
-                    Debug.Log(newTile.layer);
-                }
             }
         }
     }

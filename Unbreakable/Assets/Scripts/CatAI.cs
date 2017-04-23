@@ -19,7 +19,7 @@ public class CatAI : MonoBehaviour
 	public Vector3 initialLocation;
 	public Vector3 currentLocation;
 	public Vector3 previousLocation;
-	public float huntingRange = 20;
+	public float huntingRange = 15;
 	public Vector2 startDirection;
 	
 	public void Start() {
@@ -28,6 +28,8 @@ public class CatAI : MonoBehaviour
 
 		currentLocation = initialLocation;
 		previousLocation = initialLocation;
+
+		startDirection = startDirection.normalized;
 
 		SetPatrol();
 	}
@@ -62,6 +64,8 @@ public class CatAI : MonoBehaviour
 				// The player is nowhere near, just do your thing.
 				if (distance < huntingRange)
 				{
+					initialLocation = currentLocation;
+					startDirection = velocity.normalized;
 					currentBehaviour = Behaviour.Hunting;
 					break;
 				}

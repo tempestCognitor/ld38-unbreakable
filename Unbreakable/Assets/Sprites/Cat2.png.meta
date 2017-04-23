@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 2e77fb22e665aac4a849a0e48a510b9c
-timeCreated: 1492838851
+guid: 24a8a13069451ac4a9d5b2547bcd1670
+timeCreated: 1492924805
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -60,12 +60,12 @@ TextureImporter:
     overridden: 0
   - buildTarget: Standalone
     maxTextureSize: 2048
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
   spriteSheet:
     serializedVersion: 2
     sprites: []
