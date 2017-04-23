@@ -62,3 +62,4 @@ Future ideas/Out of Scope
 ---
 * Refactorings!
   * At the moment the AI has several different behaviours, that trigger different things based on the context, so a given 'behaviour' is spread out among many contexts. Would be good to group all the behaviour's behaviours together in one class, and register callbacks or something?
+  * Try AddForce instead of modifying velocity directly
