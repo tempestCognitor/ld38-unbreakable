@@ -8,6 +8,7 @@ public class CatAI : MonoBehaviour
 	public const float PATROL_SPEED = 10;
 	public const float HUNT_SPEED = 15;
 	public const float RETURN_SPEED = 5;
+	public const float ATTACK_POWER = 20;
 	public enum Behaviour {
 		Patrolling,
 		Hunting,
@@ -67,10 +68,7 @@ public class CatAI : MonoBehaviour
                 // The player is nowhere near, just do your thing.
                 if (SearchForPlayer(playerPosition, huntingRange))
                 {
-                    initialLocation = currentLocation;
-                    startDirection = Vector2.Angle(velocity, startDirection) < 90
-						? startDirection
-						: startDirection * -1;
+                    SavePatrol();
                     currentBehaviour = Behaviour.Hunting;
                     break;
                 }
@@ -138,13 +136,26 @@ public class CatAI : MonoBehaviour
             case Behaviour.Returning:
 				if (col.gameObject.name != "MousePlayer")
 				{
-					GetComponent<Rigidbody2D>().velocity = (col.transform.position - transform.position) * -1;
+                    var rebound = (col.transform.position - transform.position) * -1;
+					GetComponent<Rigidbody2D>().velocity = ((Vector2)rebound).ClampCardinal();
 				}
+                else
+                {
+                    if (currentBehaviour == Behaviour.Patrolling)
+                    {
+                        SavePatrol();
+                    }
+
+                    currentBehaviour = Behaviour.Hunting;
+                }
+
 				break;
 			case Behaviour.Hunting:
 				if (col.gameObject.name == "MousePlayer")
 				{
 					// Kill the player
+                    var pushBack = transform.position - col.transform.position;
+                    col.gameObject.GetComponent<Rigidbody2D>().velocity = pushBack.normalized * ATTACK_POWER;
 				}
 				break;
             default:
@@ -179,4 +190,11 @@ public class CatAI : MonoBehaviour
 
 		return move;
 	}
+
+    private void SavePatrol() {
+        initialLocation = currentLocation;
+        startDirection = Vector2.Angle(GetComponent<Rigidbody2D>().velocity, startDirection) < 90
+            ? startDirection
+            : startDirection * -1;
+    }
 }

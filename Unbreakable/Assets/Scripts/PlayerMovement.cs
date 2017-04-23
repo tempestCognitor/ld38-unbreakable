@@ -35,4 +35,13 @@ public class PlayerMovement : MonoBehaviour
 
 		GetComponent<Rigidbody2D>().velocity = facing * speed;
 	}
+
+	void OnTriggerEnter2D(Collider2D col) {
+		if(col.gameObject.name == "KeyTrigger") {
+			var key = GameObject.Find("Key");
+			key.transform.parent = transform;
+			key.transform.position = transform.position + Vector3.down;
+			col.GetComponent<Collider2D>().enabled = false;
+		}
+	}
 }
