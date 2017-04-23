@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour 
 {
 	public float speed;
+	public Vector2 facing;
 
 	// Use this for initialization
 	void Start () {
@@ -13,16 +14,25 @@ public class PlayerMovement : MonoBehaviour
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		var velocity = GetComponent<Rigidbody2D>().velocity;
-
-		if (velocity.magnitude != 0)
-		{
-			transform.rotation = Sprites.rotateFacing(velocity, -90f);
-		}
-
 		var verticalInput = Input.GetAxisRaw("Vertical");
 		var horizInput = Input.GetAxisRaw("Horizontal");
+		facing = new Vector2(horizInput, verticalInput);
 
-		GetComponent<Rigidbody2D>().velocity = new Vector2(horizInput, verticalInput) * speed;
+		foreach(Transform child in transform)
+		{
+			if(facing.magnitude == 0)
+			{
+				break;
+			}
+
+			if(child.name == transform.name)
+			{
+				continue;
+			}
+
+			child.rotation = Sprites.rotateFacing(child.rotation, facing, -90f, 50);
+		}
+
+		GetComponent<Rigidbody2D>().velocity = facing * speed;
 	}
 }

@@ -8,6 +8,11 @@ ALRIGHT. At this point I've got something like 45-ish hours left. Let's say I'm 
 
 At each top level, I want to do at least the first thing for each one (some game, some art, some music), and delve deeper into the trees as time permits.
 
+LAST MINUTE LIST
+* Finish level 1
+* Fix janky animations
+* Splash screen/menu
+
 * Make the game
   * Make the unity project
   * Top down framework

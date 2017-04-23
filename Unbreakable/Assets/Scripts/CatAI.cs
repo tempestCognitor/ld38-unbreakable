@@ -21,6 +21,8 @@ public class CatAI : MonoBehaviour
 	public Vector3 previousLocation;
 	public float huntingRange = 10;
 	public Vector2 startDirection;
+
+    private Vector2 facing;
 	
 	public void Start() {
 		currentBehaviour = Behaviour.Patrolling;
@@ -36,12 +38,9 @@ public class CatAI : MonoBehaviour
 
 	public void FixedUpdate()
     {	
-		Debug.Log(startDirection);
-
-        transform.rotation = Sprites.rotateFacing(GetComponent<Rigidbody2D>().velocity, -90f);
+        UpdateFacing();
 
         var playerPosition = GameObject.Find("MousePlayer").transform.position;
-        bool playerNearby = SearchForPlayer(playerPosition);
 
         previousLocation = currentLocation;
         currentLocation = transform.position;
@@ -56,7 +55,7 @@ public class CatAI : MonoBehaviour
                 break;
             case Behaviour.Hunting:
                 // The player is nearby, search them out
-                if (!playerNearby)
+                if (!SearchForPlayer(playerPosition, huntingRange * 3/4))
                 {
                     currentBehaviour = Behaviour.Returning;
                 }
@@ -66,7 +65,7 @@ public class CatAI : MonoBehaviour
                 break;
             case Behaviour.Patrolling:
                 // The player is nowhere near, just do your thing.
-                if (playerNearby)
+                if (SearchForPlayer(playerPosition, huntingRange))
                 {
                     initialLocation = currentLocation;
                     startDirection = Vector2.Angle(velocity, startDirection) < 90
@@ -78,7 +77,14 @@ public class CatAI : MonoBehaviour
 
                 if (velocity.magnitude < PATROL_SPEED)
                 {
-                    velocity = velocity.normalized * PATROL_SPEED;
+                    if (velocity.magnitude == 0)
+                    {
+                        velocity = startDirection.normalized * PATROL_SPEED;
+                    }
+                    else
+                    {
+                        velocity = velocity.normalized * PATROL_SPEED;
+                    }
                 }
                 else if (velocity.magnitude > PATROL_SPEED * 1.5)
                 {
@@ -88,7 +94,7 @@ public class CatAI : MonoBehaviour
                 break;
             case Behaviour.Returning:
                 // You're not where you started, and there's no reason not to be
-                if (playerNearby)
+                if (SearchForPlayer(playerPosition, huntingRange))
                 {
                     currentBehaviour = Behaviour.Hunting;
                     break;
@@ -109,15 +115,30 @@ public class CatAI : MonoBehaviour
                 break;
         }
 
+        Debug.Log($"State: {currentBehaviour}, Vel: {velocity}");
+
         GetComponent<Rigidbody2D>().velocity = velocity;
+    }
+
+    private void UpdateFacing() {
+        foreach(Transform child in transform)
+        {
+            if(child.name == transform.name)
+            {
+                continue;
+            }
+
+            child.rotation = Sprites.rotateFacing(child.rotation, GetComponent<Rigidbody2D>().velocity, -90f, 10);
+        }
     }
 
     public void OnCollisionEnter2D(Collision2D col) {
 		switch (currentBehaviour) {
 			case Behaviour.Patrolling:
+            case Behaviour.Returning:
 				if (col.gameObject.name != "MousePlayer")
 				{
-					GetComponent<Rigidbody2D>().velocity = col.relativeVelocity * -1;
+					GetComponent<Rigidbody2D>().velocity = (col.transform.position - transform.position) * -1;
 				}
 				break;
 			case Behaviour.Hunting:
@@ -125,17 +146,13 @@ public class CatAI : MonoBehaviour
 				{
 					// Kill the player
 				}
-				else
-				{
-					GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-				}
 				break;
             default:
 				break;
 		}
 	}
 
-    private bool SearchForPlayer(Vector3 playerPosition)
+    private bool SearchForPlayer(Vector3 playerPosition, float range)
     {
 		var playerDirection = playerPosition - transform.position;
 
@@ -143,7 +160,7 @@ public class CatAI : MonoBehaviour
 			return false;
 		}
 
-        var rayHit = Physics2D.Raycast(transform.position, playerDirection.normalized, huntingRange);
+        var rayHit = Physics2D.Raycast(transform.position, playerDirection.normalized, range);
         var playerNearby = false;
 
         if (rayHit.collider != null && rayHit.collider.gameObject.name == "MousePlayer")
