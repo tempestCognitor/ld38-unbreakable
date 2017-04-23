@@ -11,7 +11,16 @@ public static class VectorMathExtensions {
 		return new Vector2(a.x + i, a.y + i);
 	}
 
-    private static Vector2[] cardinals = {Vector2.up, Vector2.right, Vector2.down, Vector2.left};
+    private static Vector2[] cardinals = {
+            Vector2.up,
+            Vector2.up + Vector2.right,
+            Vector2.right,
+            Vector2.right + Vector2.down,
+            Vector2.down,
+            Vector2.down + Vector2.left,
+            Vector2.left,
+            Vector2.left + Vector2.up
+        };
 
 	public static Vector2 ClampCardinal(this Vector2 angle) {
         float minAngle = 90;

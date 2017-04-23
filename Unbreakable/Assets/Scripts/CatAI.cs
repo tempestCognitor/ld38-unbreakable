@@ -112,8 +112,6 @@ public class CatAI : MonoBehaviour
                 break;
         }
 
-        Debug.Log($"State: {currentBehaviour}, Vel: {velocity}");
-
         GetComponent<Rigidbody2D>().velocity = velocity;
     }
 
@@ -136,7 +134,7 @@ public class CatAI : MonoBehaviour
 				if (col.gameObject.name != "MousePlayer")
 				{
                     var rebound = (col.transform.position - transform.position) * -1;
-					GetComponent<Rigidbody2D>().velocity = ((Vector2)rebound).ClampCardinal();
+					GetComponent<Rigidbody2D>().AddForce(((Vector2)rebound).ClampCardinal() * PATROL_SPEED * 1000);
 				}
                 else
                 {

@@ -53,7 +53,8 @@ public class PlayerMovement : MonoBehaviour
 		{
 			var key = GameObject.Find("Key");
 			key.transform.parent = transform;
-			key.transform.position = transform.position + Vector3.down;
+			key.transform.position = transform.position + Vector3.down * 1.5f;
+
 			col.GetComponent<Collider2D>().enabled = false;
 		}
 	}
@@ -75,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
 			if(child.gameObject.name == "Key") {
 				child.parent = null;
 				child.position = location;
+
 				var keyTrigger = Instantiate(trigger, location, Quaternion.identity) as GameObject;
 				keyTrigger.GetComponent<Collider2D>().enabled = true;
 			}
