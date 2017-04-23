@@ -11,16 +11,16 @@ At each top level, I want to do at least the first thing for each one (some game
 * Make the game
   * Make the unity project
   * Top down framework
-    * Controls
-    * Simple level
+    * Controls - DONE
+    * Simple level - DONE
     * Triggers (level completion)
-  * Level generation
+  * Level generation - NOT DOING (not enough time to learn _and_ do)
     * More complicated levels, obstacles (add as needed?)
     * Procedural generation?
   * AI
-    * Make some simple AI - Done ish
+    * Make some simple AI - DONE
     * Add damage/health (damage is to key? Maybe you get a bunch of 'lives' at that level, until the key is gone?)
-    * Generate some more complex AI behaviours
+    * Generate some more complex AI behaviours - NOT DOING
       * Pathfinding?
   * Level transitions
     * "Zoom out" effect - kind of important for the theme? Maybe context is enough - you become the enemy you faced in the previous level.
@@ -39,7 +39,7 @@ At each top level, I want to do at least the first thing for each one (some game
       * Moon
 * Make the arts
   * Make the programmer arts
-    * Simple sprites, no animation
+    * Simple sprites, no animation - DONE
   * Make the animations
     * Animate main sprites
     * Animate tertiary sprites
