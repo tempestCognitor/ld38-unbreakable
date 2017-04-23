@@ -35,7 +35,7 @@ public class CatAI : MonoBehaviour
 	public void FixedUpdate() {
 		transform.rotation = Sprites.rotateFacing(GetComponent<Rigidbody2D>().velocity, -90f);
 
-		var playerPosition = GameObject.Find("Mouse").transform.position;
+		var playerPosition = GameObject.Find("MousePlayer").transform.position;
 		var distance = Vector2.Distance(playerPosition, transform.position);
 
 		previousLocation = currentLocation;
@@ -104,10 +104,9 @@ public class CatAI : MonoBehaviour
 	}
 
 	public void OnCollisionEnter2D(Collision2D col) {
-		var rb = GetComponent<Rigidbody2D>();
-
 		switch (currentBehaviour) {
 			case Behaviour.Patrolling:
+				GetComponent<Rigidbody2D>().velocity = col.relativeVelocity * -1;
 				break;
             default:
 				break;

@@ -1,30 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-/*
- * Adapted from http://unity.grogansoft.com/tiled-background/
- */
-[RequireComponent(typeof(BoxCollider2D))]
-public class TiledBackground : MonoBehaviour 
-{
-	public GameObject tile;
-    public GameObject wall;
+public class GenerateWalls : MonoBehaviour {
 
-	private readonly List<float> rotations = new List<float>{0, 90, 180, 270};
+	public BoxCollider2D region;
+	public GameObject wall;
 
-    public void Start()
-    {
-        TileBackground(GetComponent<BoxCollider2D>());
-    }
-
-    public void TileBackground(BoxCollider2D background)
+	// Use this for initialization
+	void Start () {
+		CreateWalls(region);		
+	}
+	
+    public void CreateWalls(BoxCollider2D background)
     {
 		var random = new System.Random();
 
         var backgroundSize = background.bounds.size;
-        var tileSize = tile.GetComponent<Renderer>().bounds.size;
+        var tileSize = wall.GetComponent<Renderer>().bounds.size;
 
 		var tilesX = backgroundSize.x / tileSize.x;
 		var tilesY = backgroundSize.y / tileSize.y;
@@ -39,13 +32,8 @@ public class TiledBackground : MonoBehaviour
         {
             for (int j = 0; j <= tilesY; j++)
             {
-                var newTilePos = new Vector2(bottomLeft.x + i * tileSize.x, bottomLeft.y + tileSize.y * j);
-                var newTile = Instantiate(tile, newTilePos, Quaternion.identity) as GameObject;
-
-                newTile.transform.parent = transform;
-				newTile.transform.Rotate(Vector3.forward * rotations[random.Next(rotations.Count)]);
-
                 if (i == 0 || j == 0 || i == tilesX || j == tilesY) {
+					var newTilePos = new Vector2(bottomLeft.x + i * tileSize.x, bottomLeft.y + tileSize.y * j);
                     var outerWallInstance = Instantiate(wall, newTilePos, Quaternion.identity) as GameObject;
                     //outerWallInstance.transform.SetParent(transform);
                     outerWallInstance.layer = LayerMask.NameToLayer("Default");
@@ -60,7 +48,6 @@ public class TiledBackground : MonoBehaviour
                     }
 
                     Debug.Log(outerWallInstance.layer);
-                    Debug.Log(newTile.layer);
                 }
             }
         }
