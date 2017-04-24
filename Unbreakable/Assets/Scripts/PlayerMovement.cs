@@ -57,6 +57,27 @@ public class PlayerMovement : MonoBehaviour
 
 			col.GetComponent<Collider2D>().enabled = false;
 		}
+		else if (col.gameObject.name == "EndTrigger") {
+			foreach(Transform t in transform) {
+				if(t.name == "Key"){
+					SwitchPlayerBody(col);
+					return;
+				}
+			}
+
+			var pushBack = col.transform.position - transform.position;
+			pushBack = pushBack.normalized * -ATTACK_POWER;
+			GetComponent<Rigidbody2D>().AddForce(pushBack);
+			GetComponent<AudioSource>().Play();
+		}
+		else if (col.gameObject.name == "Door-Open") {
+			foreach(Transform t in transform) {
+				if(t.name == "EndTrigger"){
+					GameObject.Find("WinningSplash").GetComponent<SpriteRenderer>().enabled = true;
+					return;
+				}
+			}
+		}
 	}
 
 	public void OnCollisionEnter2D(Collision2D col) {
@@ -68,7 +89,19 @@ public class PlayerMovement : MonoBehaviour
 			GetComponent<Rigidbody2D>().AddForce(pushBack);
 
 			DropKey(col.transform.position);
+
+			GetComponent<AudioSource>().Play();
 		}
+	}
+
+	private void SwitchPlayerBody(Collider2D col) {
+		var mouse = GameObject.Find("Mouse");
+
+		mouse.transform.parent = null;
+		col.transform.parent = transform;
+
+		GetComponent<CircleCollider2D>().radius = 3;
+		GetComponent<CircleCollider2D>().offset = new Vector2(2,2);
 	}
 
 	private void DropKey(Vector3 location) {

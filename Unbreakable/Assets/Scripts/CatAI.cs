@@ -6,7 +6,7 @@ using UnityEngine;
 public class CatAI : MonoBehaviour
 {
 	public const float PATROL_SPEED = 10;
-	public const float HUNT_SPEED = 15;
+	public const float HUNT_SPEED = 20;
 	public const float RETURN_SPEED = 10;
 	public enum Behaviour {
 		Patrolling,
